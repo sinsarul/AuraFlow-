@@ -4,6 +4,7 @@ import express from "express";
 import mongoose from "mongoose";
 import morgan from "morgan";
 
+import router from "./routes/index.js";
 dotenv.config();
 
 const app = express();
@@ -32,6 +33,8 @@ app.get("/", async (req, res) => {
 app.use((err, req, res) => {
   res.status(500).json({ message: "Internal server error" });
 });
+
+app.use("/api-v1", router);
 
 //not found middleware
 app.use((req, res) => {

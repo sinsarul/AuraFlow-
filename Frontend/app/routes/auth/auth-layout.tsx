@@ -1,12 +1,19 @@
-import React from 'react'
-import { Outlet } from 'react-router'
+import { useAuth } from "@/provider/auth-context";
+import React from "react";
+import { Navigate, Outlet } from "react-router";
 
 function authLayout() {
-  return (
-    <div>
-      <Outlet />
-    </div>
-  )
+  const AuthLayout = () => {
+    const { isAuthenticated, isLoading } = useAuth();
+
+    if (isLoading) {
+      return <div>Loading...</div>;
+    }
+    if (isAuthenticated) {
+      return <Navigate to="/dashboard" />;
+    }
+  };
+  return <Outlet />;
 }
 
-export default authLayout
+export default authLayout;

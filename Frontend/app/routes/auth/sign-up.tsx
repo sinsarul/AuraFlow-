@@ -20,8 +20,10 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Link, Links } from "react-router";
+import { useSignUpMutation } from "@/hooks/use-auth";
+import { toast } from "sonner";
 
-type SignUpFormData = z.infer<typeof signUpSchema>;
+export type SignUpFormData = z.infer<typeof signUpSchema>;
 
 const SignUp = () => {
   const form = useForm<SignUpFormData>({
@@ -30,20 +32,34 @@ const SignUp = () => {
       email: "",
       password: "",
       name: "",
-      confirmPassword:"",
+      confirmPassword: "",
     },
   });
 
+  const { mutate, isPending } = useSignUpMutation();
+
   const handleOnSubmit = (values: SignUpFormData) => {
-    console.log(values);
+    mutate(values, {
+      onSuccess: () => {
+        toast.success("account created successfully");
+      },
+      onError: (error: any) => {
+        const errorMessage =
+          error.response?.data?.message || "An error occurred";
+        console.log(error);
+        toast.error(errorMessage);
+      },
+    });
   };
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-muted/40 p-4">
       <Card className="max-w-md w-full shadow-xl">
         <CardHeader className="text-center mb-5">
-          <CardTitle className="text-2xl font-bold">Create an account</CardTitle>
+          <CardTitle className="text-2xl font-bold">
+            Create an account
+          </CardTitle>
           <CardDescription className="text-sm text-muted-foreground">
-            Create an account to continue 
+            Create an account to continue
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -69,18 +85,14 @@ const SignUp = () => {
                   </FormItem>
                 )}
               />
-               <FormField
+              <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Full Name</FormLabel>
                     <FormControl>
-                      <input
-                        type="name"
-                        placeholder="Full Name"
-                        {...field}
-                      />
+                      <input type="name" placeholder="Full Name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -104,7 +116,6 @@ const SignUp = () => {
                 name="confirmPassword"
                 render={({ field }) => (
                   <FormItem>
-                  
                     <FormLabel>Confirm Password</FormLabel>
                     <FormControl>
                       <input type="password" placeholder="*******" {...field} />
@@ -121,7 +132,7 @@ const SignUp = () => {
           <CardFooter className="flex items-center justify-center mt-6">
             <div className="flex items-center justify-center">
               <p className="text-sm text-muted-foreground">
-                Already have an account? <Link to="/sign-in">  Sign-in</Link>
+                Already have an account? <Link to="/sign-in"> Sign-in</Link>
               </p>
             </div>
           </CardFooter>

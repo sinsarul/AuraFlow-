@@ -43,10 +43,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return;
+  return(
   <ReactQueryProvider>
-    <Outlet />;
-  </ReactQueryProvider>;
+    <Outlet />
+  </ReactQueryProvider>
+  )
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

@@ -1,5 +1,7 @@
+import jwt from "jsonwebtoken";
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
+import Verification from "../models/verification.js";
 
 const registerUser = async (req, res) => {
   try {
@@ -23,12 +25,27 @@ const registerUser = async (req, res) => {
       name,
     });
 
+    const verificationToken = jwt.toString(
+      { userId: newUser._id, property: "email verification" },
+      process.env.Jwt_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    await Verification.create({
+      userId: newUser._id,
+      token: verificationToken,
+      expiresAt: new Date(Date.UTC() + 1 * 60 * 60 * 1000),
+    });
+
+    //SEND email
+    const verificationLink = `${process.env.FRONTEND_URL}/verify-email?token+${verificationToken}`;
+    const emailBody = `<p>Click <a href="${verificationLink}">here</a>to verify your email</p>`;
+    const emailSubject = "verify your email";
+
     res.status(201).json({
       message:
         "verification email sent to your email, Please check and verify your account",
     });
-
-//TODO send email
   } catch (error) {
     console.log(error);
 

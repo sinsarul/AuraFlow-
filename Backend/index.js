@@ -27,8 +27,12 @@ app.use(express.json());
 const PORT = process.env.PORT || 5000;
 
 app.get("/", async (req, res) => {
-  res.status(200).json({ message: "Welcome to Auraflow" });
+  res.status(200).json({ message: "Welcome to Auraflow API" });
 });
+
+// http:localhost:500/api-v1/ 
+app.use("/api-v1", router);
+
 //error middleware
 app.use((err, req, res) => {
   res.status(500).json({ message: "Internal server error" });

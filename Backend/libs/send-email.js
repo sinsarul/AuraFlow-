@@ -8,18 +8,23 @@ sgMail.setApiKey(process.env.SEND_GRID_API);
 const fromEmail = process.env.FROM_EMAIL;
 
 export const sendEmail = async (to, subject, html) => {
-    const msg ={
-       to,
-       from: `AuraFlow <${fromEmail}>` ,
-       subject,
-       html,
-    };
+  const msg = {
+    to,
+    from: 
+    // `sinsarpes@gmail.com`,
+    `AuraFlow <${fromEmail}>`,
+    subject,
+    html,
+  };
 
-    try {
-        await sgMail.send(msg); 
-    } catch (
-        
-    ) {
-        
-    }
-}
+  try {
+    await sgMail.send(msg);
+    console.log("Email sent successfully");
+
+    return true;
+  } catch (error) {
+    console.error("Error sending email:", error);
+
+    return false;
+  }
+};

@@ -1,6 +1,5 @@
-import arcjet, { shield, detectBot, tokenBucket } from "@arcjet/node";
+import arcjet, { shield, detectBot, tokenBucket, validateEmail } from "@arcjet/node";
 import { isSpoofedBot } from "@arcjet/inspect";
-
 
 const aj = arcjet({
   // Get your site key from https://app.arcjet.com and set it as an environment
@@ -21,6 +20,11 @@ const aj = arcjet({
         //"CATEGORY:PREVIEW", // Link previews e.g. Slack, Discord
       ],
     }),
+    validateEmail({
+      mode: "LIVE", // will block requests. Use "DRY_RUN" to log only
+      // block disposable, invalid, and email addresses with no MX records
+      deny: ["DISPOSABLE", "INVALID", "NO_MX_RECORDS"],
+    }),
     // Create a token bucket rate limit. Other algorithms are supported.
     tokenBucket({
       mode: "LIVE",
@@ -33,3 +37,4 @@ const aj = arcjet({
     }),
   ],
 });
+export default aj;

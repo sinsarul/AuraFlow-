@@ -3,10 +3,19 @@ import User from "../models/user.js";
 import bcrypt from "bcrypt";
 import Verification from "../models/verification.js";
 import { sendEmail } from "../libs/send-email.js";
+import aj from "../libs/arcjet.js";
 
 const registerUser = async (req, res) => {
   try {
     const { email, name, password } = req.body;
+
+    const decision = await aj.protect(req, { email });
+    console.log("Arcjet decision", decision.isDenied());
+
+    if (decision.isDenied()) {
+      res.writeHead(403, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ message: "Invalid email address" }));
+    }
 
     const existingUser = await User.findOne({ email });
 
@@ -62,6 +71,23 @@ const registerUser = async (req, res) => {
   }
 };
 
-const loginUser = async (req, res) => {};
+const loginUser = async (req, res) => {
+  try {
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "internal server error" });
+  }
+};
 
-export { registerUser, loginUser };
+const verifyEmail = async (req, res) => {
+  try {
+    const { token } = req.body;
+
+    co
+  } catch (error) { 
+    console.log(error);
+    res.status(500).json({ message: "internal server error" });
+  }
+};
+
+export { registerUser, loginUser, verifyEmail };

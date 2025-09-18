@@ -3,9 +3,20 @@ import express from "express";
 
 import { z } from "zod";
 import { validateRequest } from "zod-express-middleware";
-import { loginSchema, registerSchema, verificationSchema } from "../libs/validate.schema.js";
-import { loginUser, registerUser, verifyEmail } from "../controllers/auth-controller.js";
-
+import {
+  loginSchema,
+  registerSchema,
+  resetPasswordSchema,
+  verificationSchema,
+} from "../libs/validate.schema.js";
+import {
+  loginUser,
+  registerUser,
+  resetPasswordRequest,
+  verifyEmail,
+  verifyResetPasswordTokenAndResetPassword,
+} from "../controllers/auth-controller.js";
+import { verify } from "jsonwebtoken";
 
 const router = express.Router();
 
@@ -27,9 +38,26 @@ router.post(
 router.post(
   "/verify-email",
   validateRequest({
-    body: verificationSchema
+    body: verificationSchema,
   }),
   verifyEmail
-)
+);
+
+router.post(
+  "/reset-password-request",
+  validateRequest({
+    body: {
+      email: z.string().email(),
+    },
+  }),
+  resetPasswordRequest
+);
+router.post(
+  "/reset-password",
+  validateRequest({
+    body:resetPasswordSchema,
+  }),
+  verifyResetPasswordTokenAndResetPassword
+);
 
 export default router;

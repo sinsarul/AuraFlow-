@@ -1,9 +1,11 @@
-import React from 'react'
+import { resetPasswordSchema } from "@/lib/schema";
+import {z} from "zod";
+import React from "react";
 
-function resetPassword() {
-  return (
-    <div>resetPassword</div>
-  )
-}
+type ResetPasswordFromData = z.infer<typeof resetPasswordSchema>;
 
-export default resetPassword
+function ResetPassword = () => {
+  return <div>ResetPassword</div>;
+};
+
+export default ResetPassword;

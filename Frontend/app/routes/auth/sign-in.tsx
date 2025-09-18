@@ -23,11 +23,13 @@ import { Link, Links, Navigate, useNavigate } from "react-router";
 import { useLoginMutation } from "@/hooks/use-auth";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { useAuth } from "@/provider/auth-context";
 
 type SignInFormData = z.infer<typeof signInSchema>;
 
 const SignIn = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const form = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -41,6 +43,7 @@ const SignIn = () => {
   const handleOnSubmit = (values: SignInFormData) => {
     mutate(values, {
       onSuccess: (data) => {
+        login(data);df
         console.log(data);
         toast.success("Login successful");
         navigate("/dashboard");
@@ -109,7 +112,7 @@ const SignIn = () => {
                 )}
               />
               <Button type="submit" className="w-full" disabled={isPending}>
-                {isPending ? <Loader2 className="w-4 h-4 mr-2"/> : "Sign in" }
+                {isPending ? <Loader2 className="w-4 h-4 mr-2" /> : "Sign in"}
               </Button>
             </form>
           </FormProvider>

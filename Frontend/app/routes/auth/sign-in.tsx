@@ -43,7 +43,7 @@ const SignIn = () => {
   const handleOnSubmit = (values: SignInFormData) => {
     mutate(values, {
       onSuccess: (data) => {
-        login(data);df
+        login(data);
         console.log(data);
         toast.success("Login successful");
         navigate("/dashboard");
@@ -97,10 +97,10 @@ const SignIn = () => {
                     <div className="flex items-center justify-between">
                       <FormLabel></FormLabel>
                       <Link
-                        to="/forget-password"
+                        to="/forgot-password"
                         className="text-sm text-blue-600"
                       >
-                        forget password?
+                        forgot password?
                       </Link>
                     </div>
                     <FormLabel>password</FormLabel>

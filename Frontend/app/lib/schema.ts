@@ -27,3 +27,8 @@ export const signUpSchema = z
     message: "Passwords do not match",
   });
   
+export const forgotPasswordSchema = z.object({
+  email: z.string().email("Invalid email address"),
+});
+
+

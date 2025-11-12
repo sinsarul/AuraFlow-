@@ -26,7 +26,7 @@ import { toast } from "sonner";
 export type SignUpFormData = z.infer<typeof signUpSchema>;
 
 const SignUp = () => {
-  const navigate = useNavigate ();
+  const navigate = useNavigate();
   const form = useForm<SignUpFormData>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -42,16 +42,17 @@ const SignUp = () => {
   const handleOnSubmit = (values: SignUpFormData) => {
     mutate(values, {
       onSuccess: () => {
-        toast.success("Email Verification required.",{
-          description : 
-          "Please check your email for verification link. If you don't see it, please check your spam folder "
+        toast.success("Email Verification required.", {
+          description:
+            "Please check your email for verification link. If you don't see it, please check your spam folder ",
         });
-         form.reset();
-    navigate("/sign-in");
+        form.reset();
+        navigate("/sign-in");
       },
       onError: (error: any) => {
         const errorMessage =
           error.response?.data?.message || "An error occurred";
+        console.log(values);
         console.log(error);
         toast.error(errorMessage);
       },

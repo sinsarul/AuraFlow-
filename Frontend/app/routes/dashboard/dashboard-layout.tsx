@@ -1,3 +1,4 @@
+import { SidebarComponent } from "@/components/layout/sidebar-component";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/provider/auth-context";
 import { Loader } from "lucide-react";
@@ -8,7 +9,7 @@ const DashboardLayout = () => {
   const { isLoading, isAuthenticated } = useAuth();
 
   if (isLoading) {
-    return <Loader />;
+     <Loader />;
   }
 
   if (!isAuthenticated) {
@@ -17,7 +18,7 @@ const DashboardLayout = () => {
 
   return (
     <div className="flex h-screen w-full">
-      {/* Sidebar */}
+      <SidebarComponent />
       <div className="flex flex-1 flex-col h-full">
         {/* <Header/> */}
         <main className="flex-1 overflow-y-auto h-full w-full">
